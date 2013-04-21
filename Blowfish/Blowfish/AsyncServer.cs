@@ -15,57 +15,95 @@ namespace Blowfish
 
         public AsyncServer(EndPoint localEndPoint, Action<Message> callBack, Action<Exception> errorCallBack)
         {
-            _exceptionCallBack = errorCallBack;
-            _callBack = callBack;
-            //We are using TCP sockets
-            _serverSocket = new Socket(localEndPoint.AddressFamily,
-                                      SocketType.Stream,
-                                      ProtocolType.Tcp);
-            _serverSocket.Bind(localEndPoint);
-            _serverSocket.Listen(4);
+            try{
+                _exceptionCallBack = errorCallBack;
+                _callBack = callBack;
+                //We are using TCP sockets
+                _serverSocket = new Socket(localEndPoint.AddressFamily,
+                                          SocketType.Stream,
+                                          ProtocolType.Tcp);
+                _serverSocket.Bind(localEndPoint);
+                _serverSocket.Listen(4);
 
-            //Accept the incoming clients
-            _serverSocket.BeginAccept(OnAccept, null);
+                //Accept the incoming clients
+                _serverSocket.BeginAccept(OnAccept, null);
+            }
+            catch(Exception e)
+            {
+                _exceptionCallBack(e);
+            }
         }
 
         public void Send(Message msg)
         {
-            byte[] json = Encoding.ASCII.GetBytes(JsonHelper.Serialize(msg));
-            _clientSocket.BeginSend(json, 0, json.Length, SocketFlags.None, OnSend, null);
+            try{
+                byte[] json = Encoding.ASCII.GetBytes(JsonHelper.Serialize(msg));
+                _clientSocket.BeginSend(json, 0, json.Length, SocketFlags.None, OnSend, null);
+            
+            }
+            catch(Exception e)
+            {
+                _exceptionCallBack(e);
+            }
         }
 
 
         public void OnSend(IAsyncResult ar)
         {
-            var client = (Socket)ar.AsyncState;
-            if(client != null)
-            {
-                client.EndSend(ar);
+            try{
+                var client = (Socket)ar.AsyncState;
+                if(client != null)
+                {
+                    client.EndSend(ar);
+                }
             }
+            catch (Exception e)
+            {
+                _exceptionCallBack(e);
+            }
+
         }
 
         private void OnAccept(IAsyncResult ar)
         {
-            _clientSocket = _serverSocket.EndAccept(ar);
-            _byteData = new Byte[1024];
-            _clientSocket.BeginReceive(_byteData, 0, _byteData.Length, SocketFlags.None,
-                OnReceive, _clientSocket);
+            try
+            {
+                _clientSocket = _serverSocket.EndAccept(ar);
+                _byteData = new Byte[1024];
+                _clientSocket.BeginReceive(_byteData, 0, _byteData.Length, SocketFlags.None,
+                    OnReceive, _clientSocket);
+            }
+            catch (Exception e)
+            {
+                _exceptionCallBack(e);
+            }
         }
 
         private void OnReceive(IAsyncResult ar)
         {
-            var client = (Socket)ar.AsyncState;
-            client.EndReceive(ar);
+            try
+            {
+                var client = (Socket)ar.AsyncState;
+                client.EndReceive(ar);
 
-            //Transform the array of bytes received from the user into an
-            //intelligent form of object Data
-            var json = Encoding.ASCII.GetString(_byteData).TrimEnd('\0');
-            var msg = JsonHelper.Deserialize<Message>(json);
+                //Transform the array of bytes received from the user into an
+                //intelligent form of object Data
+                var json = Encoding.ASCII.GetString(_byteData).TrimEnd('\0');
+                var msg = JsonHelper.Deserialize<Message>(json);
 
-            _callBack(msg);
+                _callBack(msg);
 
+<<<<<<< HEAD
             _byteData = new Byte[1024];
             client.BeginReceive(_byteData, 0, _byteData.Length, SocketFlags.None, OnReceive, client);
+=======
+                client.BeginReceive(_byteData, 0, _byteData.Length, SocketFlags.None, OnReceive, client);
+            }
+            catch (Exception e)
+            {
+                _exceptionCallBack(e);
+            }
+>>>>>>> 8255087ef94eb2a8e3e9e76a47ebe229bad73eb1
         }
     }
 }
