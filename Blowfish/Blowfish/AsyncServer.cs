@@ -8,7 +8,7 @@ namespace Blowfish
     internal class AsyncServer : IAsyncSocket
     {
         private readonly Socket _serverSocket;
-        private readonly byte[] _byteData = new byte[1024];
+        private byte[] _byteData = new byte[1024];
         private Socket _clientSocket;
         private readonly Action<Message> _callBack;
         private readonly Action<Exception> _exceptionCallBack;
@@ -47,7 +47,7 @@ namespace Blowfish
         private void OnAccept(IAsyncResult ar)
         {
             _clientSocket = _serverSocket.EndAccept(ar);
-
+            _byteData = new Byte[1024];
             _clientSocket.BeginReceive(_byteData, 0, _byteData.Length, SocketFlags.None,
                 OnReceive, _clientSocket);
         }
@@ -64,6 +64,7 @@ namespace Blowfish
 
             _callBack(msg);
 
+            _byteData = new Byte[1024];
             client.BeginReceive(_byteData, 0, _byteData.Length, SocketFlags.None, OnReceive, client);
         }
     }

@@ -1,11 +1,14 @@
-﻿using System;
+﻿//
+// Written by Thomas Kempton used with permission.
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 namespace Blowfish
 {
-   using System.IO;
+    using System.IO;
     using System.Runtime.Serialization.Json;
     using System.Text;
 
