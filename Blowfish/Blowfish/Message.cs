@@ -18,7 +18,7 @@ namespace Blowfish
         [DataMember(Name = "user", IsRequired = true)]
         public string User { get; set; }
 
-        [DataMember(Name = "encyrpted", IsRequired = true)]
+        [DataMember(Name = "encrypted", IsRequired = true)]
         public bool Encrypted { get; set; }
 
 
