@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Net;
 using System.Windows.Forms;
 
@@ -43,12 +44,14 @@ namespace Blowfish
             }
             else
             {
-                var time = Environment.TickCount;
                 var fish = new BlowFish(tb_key.Text);
 
-                time = Environment.TickCount - time;
-                tb_console.Invoke(new Action(() => tb_console.AppendText(string.Format(@"Encrytion time: {0}{1}ms{0}", Environment.NewLine, time))));
-                msg = new Message(tb_name.Text, true, fish.Encrypt_CBC(tb_message.Text));
+                var sw = new Stopwatch();
+                sw.Start();
+                var text = fish.Encrypt_CBC(tb_message.Text);
+                sw.Stop();
+                tb_console.Invoke(new Action(() => tb_console.AppendText(string.Format(@"Encrytion time: {0}{1} ticks{0}", Environment.NewLine, sw.ElapsedTicks))));
+                msg = new Message(tb_name.Text, true, text);
             }
             _connection.Send(msg);
             tb_console.Invoke(new Action(() => tb_console.AppendText(string.Format(@"Sent: {0}{1}{0}", Environment.NewLine, JsonHelper.Serialize(msg)))));
@@ -75,16 +78,18 @@ namespace Blowfish
 
         private void Update(Message msg)
         {
-            
             string text = msg.Text;
             tb_console.Invoke(new Action(() => tb_console.AppendText(string.Format(@"Received: {0}{1}{0}", Environment.NewLine, JsonHelper.Serialize(msg)))));
+            
             if(msg.Encrypted)
             {
                 var fish = new BlowFish(tb_key.Text);
-                var time = Environment.TickCount;
+
+                var sw = new Stopwatch();
+                sw.Start();
                 text = fish.Decrypt_CBC(text);
-                time = Environment.TickCount - time;
-                tb_console.Invoke(new Action(() => tb_console.AppendText(string.Format(@"Decrytion time: {0}{1}ms{0}", Environment.NewLine, time))));
+                sw.Stop();
+                tb_console.Invoke(new Action(() => tb_console.AppendText(string.Format(@"Decrytion time: {0}{1} ticks{0}", Environment.NewLine, sw.ElapsedTicks))));
             }
             tb_messages.Invoke(new Action(() => tb_messages.AppendText(string.Format(@"{0}:{1} {2}", msg.User, text, Environment.NewLine))));
         }
@@ -92,6 +97,7 @@ namespace Blowfish
         private void HandleError(Exception ex)
         {
             MessageBox.Show(ex.Message);
+            Environment.Exit(-1);
         }
     }
 }
