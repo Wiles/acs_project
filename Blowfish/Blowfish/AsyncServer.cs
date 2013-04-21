@@ -47,6 +47,20 @@ namespace Blowfish
             }
         }
 
+        public void close()
+        {
+            if(_serverSocket != null)
+            {
+               _serverSocket.Dispose(); 
+            }
+
+            if(_clientSocket != null)
+            {
+                _clientSocket.Dispose();
+            }
+            
+        }
+
 
         public void OnSend(IAsyncResult ar)
         {

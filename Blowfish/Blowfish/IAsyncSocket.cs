@@ -5,5 +5,6 @@ namespace Blowfish
     interface IAsyncSocket
     {
         void Send(Message msg);
+        void close();
     }
 }

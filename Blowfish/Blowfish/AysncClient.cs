@@ -25,6 +25,14 @@ namespace Blowfish
             }
         }
 
+        public void close()
+        {
+            if(_client != null)
+            {
+                _client.Dispose();
+            }
+        }
+
         private void OnSend(IAsyncResult ar)
         {
             try{

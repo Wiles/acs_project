@@ -97,6 +97,10 @@ namespace Blowfish
         private void HandleError(Exception ex)
         {
             MessageBox.Show(ex.Message);
+            if(_connection != null)
+            {
+                _connection.close();
+            }
             Environment.Exit(-1);
         }
     }
