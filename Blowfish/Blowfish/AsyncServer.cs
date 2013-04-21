@@ -93,17 +93,13 @@ namespace Blowfish
 
                 _callBack(msg);
 
-<<<<<<< HEAD
-            _byteData = new Byte[1024];
-            client.BeginReceive(_byteData, 0, _byteData.Length, SocketFlags.None, OnReceive, client);
-=======
+                _byteData = new Byte[1024];
                 client.BeginReceive(_byteData, 0, _byteData.Length, SocketFlags.None, OnReceive, client);
             }
             catch (Exception e)
             {
                 _exceptionCallBack(e);
             }
->>>>>>> 8255087ef94eb2a8e3e9e76a47ebe229bad73eb1
         }
     }
 }
