@@ -32,31 +32,38 @@ namespace Blowfish
 
         private void tb_message_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (e.KeyChar != (char) 13 || string.IsNullOrWhiteSpace(tb_message.Text) || _connection == null)
+            try
             {
-                return;
-            }
+                if (e.KeyChar != (char)13 || string.IsNullOrWhiteSpace(tb_message.Text) || _connection == null)
+                {
+                    return;
+                }
 
-            Message msg;
-            if(string.IsNullOrWhiteSpace(tb_key.Text))
-            {
-                msg = new Message(tb_name.Text, false, tb_message.Text);
-            }
-            else
-            {
-                var fish = new BlowFish(Encoding.UTF8.GetBytes(tb_key.Text));
+                Message msg;
+                if (string.IsNullOrWhiteSpace(tb_key.Text))
+                {
+                    msg = new Message(tb_name.Text, false, tb_message.Text);
+                }
+                else
+                {
+                    var fish = new BlowFish(Encoding.UTF8.GetBytes(tb_key.Text));
 
-                var sw = new Stopwatch();
-                sw.Start();
-                var text = fish.Encrypt_CBC(tb_message.Text);
-                sw.Stop();
-                tb_console.Invoke(new Action(() => tb_console.AppendText(string.Format(@"Encrytion time: {0}{1} ticks{0}", Environment.NewLine, sw.ElapsedTicks))));
-                msg = new Message(tb_name.Text, true, text);
+                    var sw = new Stopwatch();
+                    sw.Start();
+                    var text = fish.Encrypt_CBC(tb_message.Text);
+                    sw.Stop();
+                    tb_console.Invoke(new Action(() => tb_console.AppendText(string.Format(@"Encrytion time: {0}{1} ticks{0}", Environment.NewLine, sw.ElapsedTicks))));
+                    msg = new Message(tb_name.Text, true, text);
+                }
+                _connection.Send(msg);
+                tb_console.Invoke(new Action(() => tb_console.AppendText(string.Format(@"Sent: {0}{1}{0}", Environment.NewLine, JsonHelper.Serialize(msg)))));
+                tb_messages.Invoke(new Action(() => tb_messages.AppendText(string.Format(@"{0}:{1} {2}", msg.User, tb_message.Text, Environment.NewLine))));
+                tb_message.Clear();
             }
-            _connection.Send(msg);
-            tb_console.Invoke(new Action(() => tb_console.AppendText(string.Format(@"Sent: {0}{1}{0}", Environment.NewLine, JsonHelper.Serialize(msg)))));
-            tb_messages.Invoke(new Action(() => tb_messages.AppendText(string.Format(@"{0}:{1} {2}", msg.User, tb_message.Text, Environment.NewLine))));
-            tb_message.Clear();
+            catch (Exception ex)
+            {
+                HandleError(ex);
+            }
         }
 
         private void btn_client_Click(object sender, EventArgs e)
@@ -78,20 +85,27 @@ namespace Blowfish
 
         private void Update(Message msg)
         {
-            string text = msg.Text;
-            tb_console.Invoke(new Action(() => tb_console.AppendText(string.Format(@"Received: {0}{1}{0}", Environment.NewLine, JsonHelper.Serialize(msg)))));
-            
-            if(msg.Encrypted)
+            try
             {
-                var fish = new BlowFish(Encoding.UTF8.GetBytes(tb_key.Text));
+                string text = msg.Text;
+                tb_console.Invoke(new Action(() => tb_console.AppendText(string.Format(@"Received: {0}{1}{0}", Environment.NewLine, JsonHelper.Serialize(msg)))));
 
-                var sw = new Stopwatch();
-                sw.Start();
-                text = fish.Decrypt_CBC(text);
-                sw.Stop();
-                tb_console.Invoke(new Action(() => tb_console.AppendText(string.Format(@"Decrytion time: {0}{1} ticks{0}", Environment.NewLine, sw.ElapsedTicks))));
+                if (msg.Encrypted)
+                {
+                    var fish = new BlowFish(Encoding.UTF8.GetBytes(tb_key.Text));
+
+                    var sw = new Stopwatch();
+                    sw.Start();
+                    text = fish.Decrypt_CBC(text);
+                    sw.Stop();
+                    tb_console.Invoke(new Action(() => tb_console.AppendText(string.Format(@"Decrytion time: {0}{1} ticks{0}", Environment.NewLine, sw.ElapsedTicks))));
+                }
+                tb_messages.Invoke(new Action(() => tb_messages.AppendText(string.Format(@"{0}:{1} {2}", msg.User, text, Environment.NewLine))));
             }
-            tb_messages.Invoke(new Action(() => tb_messages.AppendText(string.Format(@"{0}:{1} {2}", msg.User, text, Environment.NewLine))));
+            catch (Exception e)
+            {
+                HandleError(e);
+            }
         }
 
         private void HandleError(Exception ex)
