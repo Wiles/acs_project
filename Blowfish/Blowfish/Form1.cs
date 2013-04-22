@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Net;
 using System.Windows.Forms;
+using System.Text;
 
 namespace Blowfish
 {
@@ -40,11 +41,10 @@ namespace Blowfish
             if(string.IsNullOrWhiteSpace(tb_key.Text))
             {
                 msg = new Message(tb_name.Text, false, tb_message.Text);
-                
             }
             else
             {
-                var fish = new BlowFish(tb_key.Text);
+                var fish = new BlowFish(Encoding.UTF8.GetBytes(tb_key.Text));
 
                 var sw = new Stopwatch();
                 sw.Start();
@@ -83,7 +83,7 @@ namespace Blowfish
             
             if(msg.Encrypted)
             {
-                var fish = new BlowFish(tb_key.Text);
+                var fish = new BlowFish(Encoding.UTF8.GetBytes(tb_key.Text));
 
                 var sw = new Stopwatch();
                 sw.Start();
