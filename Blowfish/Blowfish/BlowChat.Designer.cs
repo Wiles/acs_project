@@ -1,6 +1,6 @@
 ﻿namespace Blowfish
 {
-    partial class Form1
+    partial class BlowChat
     {
         /// <summary>
         /// Required designer variable.
@@ -162,8 +162,8 @@
             // 
             // tb_message
             // 
-            this.tb_message.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.tb_message.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tb_message.Location = new System.Drawing.Point(13, 558);
             this.tb_message.MaxLength = 140;
             this.tb_message.Name = "tb_message";
@@ -173,9 +173,9 @@
             // 
             // tb_messages
             // 
-            this.tb_messages.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.tb_messages.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tb_messages.Location = new System.Drawing.Point(230, 120);
             this.tb_messages.Multiline = true;
             this.tb_messages.Name = "tb_messages";
@@ -184,15 +184,15 @@
             // 
             // tb_console
             // 
-            this.tb_console.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)));
+            this.tb_console.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.tb_console.Location = new System.Drawing.Point(13, 120);
             this.tb_console.Multiline = true;
             this.tb_console.Name = "tb_console";
             this.tb_console.Size = new System.Drawing.Size(211, 432);
             this.tb_console.TabIndex = 4;
             // 
-            // Form1
+            // BlowChat
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -201,8 +201,8 @@
             this.Controls.Add(this.tb_messages);
             this.Controls.Add(this.tb_message);
             this.Controls.Add(this.groupBox1);
-            this.Name = "Form1";
-            this.Text = "Form1";
+            this.Name = "BlowChat";
+            this.Text = "BlowChat";
             ((System.ComponentModel.ISupportInitialize)(this.eventLog1)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

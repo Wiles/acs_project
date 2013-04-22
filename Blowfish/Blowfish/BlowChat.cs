@@ -6,11 +6,11 @@ using System.Text;
 
 namespace Blowfish
 {
-    public partial class Form1 : Form
+    public partial class BlowChat : Form
     {
         private IAsyncSocket _connection;
 
-        public Form1()
+        public BlowChat()
         {
             InitializeComponent();
         }
