@@ -5,6 +5,9 @@ using System.Text;
 
 namespace Blowfish
 {
+    /// <summary>
+    /// Async Client Socket
+    /// </summary>
     public class AsyncClient : IAsyncSocket
     {
         private readonly Socket _client;
@@ -12,6 +15,10 @@ namespace Blowfish
         private readonly Action<Message> _callBack;
         private readonly Action<Exception> _errorCallBack;
 
+        /// <summary>
+        /// Sends the specified message to the server
+        /// </summary>
+        /// <param name="msg">The message.</param>
         public void Send(Message msg)
         {
             try
@@ -25,6 +32,9 @@ namespace Blowfish
             }
         }
 
+        /// <summary>
+        /// Closes this instance.
+        /// </summary>
         public void close()
         {
             if(_client != null)
@@ -33,6 +43,10 @@ namespace Blowfish
             }
         }
 
+        /// <summary>
+        /// Called when [send].
+        /// </summary>
+        /// <param name="ar">The ar.</param>
         private void OnSend(IAsyncResult ar)
         {
             try{
@@ -44,6 +58,12 @@ namespace Blowfish
             }
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AsyncClient"/> class.
+        /// </summary>
+        /// <param name="endPoint">The end point.</param>
+        /// <param name="callBack">The call back for when a message is received</param>
+        /// <param name="errorCallBack">The error call back.</param>
         public AsyncClient(EndPoint endPoint, Action<Message> callBack, Action<Exception> errorCallBack)
         {
             try{
@@ -72,6 +92,10 @@ namespace Blowfish
             }
         }
 
+        /// <summary>
+        /// Called when [connect].
+        /// </summary>
+        /// <param name="ar">The ar.</param>
         private void OnConnect(IAsyncResult ar)
         {
             try{
@@ -83,6 +107,10 @@ namespace Blowfish
             }
         }
 
+        /// <summary>
+        /// Called when [receive].
+        /// </summary>
+        /// <param name="ar">The ar.</param>
         private void OnReceive(IAsyncResult ar)
         {
             try

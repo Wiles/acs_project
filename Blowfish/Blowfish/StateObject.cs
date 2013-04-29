@@ -3,6 +3,9 @@ using System.Text;
 
 namespace Blowfish
 {
+    /// <summary>
+    /// State used by the sockets
+    /// </summary>
     public class StateObject
     {
         // Client  socket.

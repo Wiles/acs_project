@@ -1,10 +1,6 @@
 ﻿//
 // Written by Thomas Kempton used with permission.
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+//
 
 namespace Blowfish
 {
@@ -12,14 +8,19 @@ namespace Blowfish
     using System.Runtime.Serialization.Json;
     using System.Text;
 
+    /// <summary>
+    /// Serializes and deserializes JSON
+    /// </summary>
     public static class JsonHelper
     {
         /// <summary>
         /// JSON Serialization
         /// </summary>
-        /// <typeparam name="T">The model type.</typeparam>
+        /// <typeparam name="T">The object type</typeparam>
         /// <param name="entity">The object to serialize.</param>
-        /// <returns>The serialized object.</returns>
+        /// <returns>
+        /// The serialized object.
+        /// </returns>
         public static string Serialize<T>(T entity)
         {
             var ser = new DataContractJsonSerializer(typeof(T));
@@ -34,9 +35,11 @@ namespace Blowfish
         /// <summary>
         /// JSON Deserialization
         /// </summary>
-        /// <typeparam name="T">The model type.</typeparam>
+        /// <typeparam name="T">The object type</typeparam>
         /// <param name="json">The json to deserialize.</param>
-        /// <returns>The deserialized object.</returns>
+        /// <returns>
+        /// The deserialized object.
+        /// </returns>
         public static T Deserialize<T>(string json)
         {
             var ser = new DataContractJsonSerializer(typeof(T));
